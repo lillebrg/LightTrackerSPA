@@ -5,5 +5,5 @@ export interface LightLog{
     Hours: string;
     Minutes: string;
     Seconds: string;
-    DateSent: Date;
+    DateSent: string;
 }

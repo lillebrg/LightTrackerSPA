@@ -14,10 +14,11 @@ import { SharedModule } from '../../../shared/shared.module';
 export class AdminComponent implements OnInit{
   lightLogs$: Observable<LightLog[]>;
   Delete: any;
-  selectedLightLogs: any;
+  selectedLightLogs: any[] = [];
   
   constructor(
-  private data: DataService) {
+  private data: DataService,
+  ) {
     this.lightLogs$ = of([] as LightLog[]);
   }
    
