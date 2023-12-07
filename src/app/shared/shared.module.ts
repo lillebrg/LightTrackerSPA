@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 
 
 
+
 const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule];
 
 @NgModule({
