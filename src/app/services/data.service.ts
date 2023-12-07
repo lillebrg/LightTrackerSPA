@@ -75,7 +75,7 @@ export class DataService {
     );
   }
   postUser(user: User): Observable<User>{
-    return this.http.post<User>(`${this.url}/api/users`, user)
+    return this.http.post<User>(`${this.url}/users`, user)
     
   }
 }
