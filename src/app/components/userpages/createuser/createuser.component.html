@@ -1,1 +1,39 @@
-<p>createuser works!</p>
+<div class="text-center container" id="createUserContainer">
+    <div class="boxShadow">
+        <h4>Create User</h4>
+        <br>
+        <hr>
+        <br>
+        <form #userForm="ngForm" (ngSubmit)="createUserSubmit(userForm.value)">
+            <div class="row form-group ">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <input type="text" name="UserName" class="form-control mb-3 " placeholder="Username" required ngModel>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row form-group">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <input type="password" name="Password" class="form-control mb-3" placeholder="password" required ngModel>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row">
+                <label for="adminCheckbox" class="col-6">Admin</label>
+                <input name="IsAdmin" type="checkbox" class="checkbox col-6 mb-4" id="adminCheckbox" ngModel>
+            </div>
+
+
+            <div class="row mt-5">
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+                <button type="submit" class="btn btn-success col-4">Create</button>
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+
+            </div>
+        </form>
+    </div>
+</div>
+

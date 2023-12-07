@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 
 // PrimeNG Imports
@@ -14,7 +13,7 @@ import { ButtonModule } from 'primeng/button';
 const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule];
 
 @NgModule({
-    imports: [...PRIME_NG_MODULES, CommonModule, HttpClientModule],
-    exports: [...PRIME_NG_MODULES, CommonModule, HttpClientModule ]
+    imports: [...PRIME_NG_MODULES, CommonModule, FormsModule],
+    exports: [...PRIME_NG_MODULES, CommonModule, FormsModule ]
 })
 export class SharedModule {};
