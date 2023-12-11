@@ -52,7 +52,7 @@ export class DataService {
     );
   }
 
-  deleteLightLogs(id: string): Observable<string> {
+  deleteLightLog(id: string): Observable<string> {
     return this.http.delete<string>(`${this.url}/lightlogs/${id}`).pipe(
       tap((response) => {
         this.msg.add({
@@ -61,7 +61,6 @@ export class DataService {
           detail: 'LightLog was deleted.',
           life: 2000,
         });
-
         return response;
       }),
       catchError((error) => {

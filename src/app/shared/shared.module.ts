@@ -7,10 +7,12 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 
-const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule, ToastModule];
+
+const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule, ToastModule, ConfirmDialogModule];
 
 @NgModule({
     imports: [...PRIME_NG_MODULES, CommonModule, FormsModule],
