@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable} from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
 import { LightLog } from '../models/lightlog.model';
 import { User } from '../models/user.model';
+import { error } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -75,7 +76,6 @@ export class DataService {
     );
   }
   postUser(user: User): Observable<User>{
-    return this.http.post<User>(`${this.url}/users`, user)
-    
+    return this.http.post<User>(`${this.url}/users`, user).pipe()
   }
 }

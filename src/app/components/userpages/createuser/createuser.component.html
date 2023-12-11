@@ -1,3 +1,5 @@
+    <p-toast></p-toast>
+
 <div class="text-center container" id="createUserContainer">
     <div class="boxShadow">
         <h4>Create User</h4>
@@ -7,22 +9,27 @@
         <form #userForm="ngForm" (ngSubmit)="createUserSubmit(userForm.value)">
             <div class="row form-group ">
                 <div class="col-2"></div>
-                <div class="col-8">
-                    <input type="text" name="UserName" class="form-control mb-3 " placeholder="Username" required ngModel>
+                <div class="col-8  mb-3 ">
+                    <input #uName="ngModel" required minlength="2" type="text" name="UserName" class="form-control"
+                        placeholder="Username" ngModel>
+                    <small *ngIf="uName.touched && uName.invalid" class="text-danger ">Invalid Username</small>
                 </div>
                 <div class="col-2"></div>
             </div>
             <div class="row form-group">
                 <div class="col-2"></div>
                 <div class="col-8">
-                    <input type="password" name="Password" class="form-control mb-3" placeholder="password" required ngModel>
+                    <input #pWord="ngModel" required minlength="8" type="password" name="Password"
+                        class="form-control mb-3" placeholder="password" ngModel />
+                    <div *ngIf="pWord.touched && pWord.invalid" class="text-danger">
+                        <p *ngIf="pWord.errors?.['required']">Invalid password</p>
+                        <p *ngIf="pWord.errors?.['minlength']">Minimum length is 8 characters</p>
+                    </div>
                 </div>
                 <div class="col-2"></div>
             </div>
-            <div class="row">
-                <label for="adminCheckbox" class="col-6">Admin</label>
-                <input name="IsAdmin" type="checkbox" class="checkbox col-6 mb-4" id="adminCheckbox" ngModel>
-            </div>
+
+
 
 
             <div class="row mt-5">
@@ -34,6 +41,6 @@
 
             </div>
         </form>
+
     </div>
 </div>
-
