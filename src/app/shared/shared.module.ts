@@ -7,11 +7,13 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 
 
-const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule];
+
+const PRIME_NG_MODULES = [ToolbarModule, TableModule, ButtonModule, ConfirmDialogModule];
 
 @NgModule({
     imports: [...PRIME_NG_MODULES, CommonModule, FormsModule],
