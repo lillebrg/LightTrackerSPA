@@ -1,31 +1,35 @@
 mat-card {
-    max-width: 400px;
-    margin: 2em auto;
-    text-align: center;
-  }
-  
-  .signin-content {
-    padding: 60px 1rem;
-    width: 50%;
-  }
-  
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
 
-  
-  .boxShadow {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    padding: 7%;
-  }
-  
-  .UPInput {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  #LogoFont{
-    font-family: 'Brush Script MT', cursive;
-    font-size: 35px;
-  }
+.signin-content {
+  padding: 60px 1rem;
+  width: 50%;
+}
+
+.bodyColor {
+  background-color: #5280b7;
+}
+
+
+.UPInput {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#LogoFont {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 35px;
+}
+
+.logoImg {
+  height: 35%;
+  width: 25%;
+}
