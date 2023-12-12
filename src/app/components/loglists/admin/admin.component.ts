@@ -3,7 +3,7 @@ import { Observable, map} from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
 import { DataService } from '../../../services/data.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -18,10 +18,12 @@ export class AdminComponent implements OnInit{
   lightLogs$!: Observable<LightLog[]>;
   Delete: any;
   selectedLightLogs: LightLog[] = [];
+  deletedIds: number[] = [];
   
   constructor(
     private data: DataService,
     private confirmationService: ConfirmationService,
+    private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute){}
    
@@ -35,10 +37,9 @@ export class AdminComponent implements OnInit{
         return logs.map((log: LightLog) => {
           const dateSentFirstPart = log.dateSent.substring(0, 10);
           const dateSentSecondPart = log.dateSent.substring(11,19);
-          // Map the split parts to the new FE_LightLog interface
           return {
             ...log,
-            dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts for illustration
+            dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
           };
         });
       })
@@ -66,8 +67,30 @@ export class AdminComponent implements OnInit{
 
 
   deleteSelectedLightLogs() {
-  throw new Error('Method not implemented.');
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the selected products?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // Collecting IDs before deletion
+        this.selectedLightLogs.forEach(log => {
+          this.deletedIds.push(log.id); // Pushing IDs into deletedIds array          
+        });
+        console.log(this.deletedIds);
+        const response = this.data.deleteLightLogs(this.deletedIds);
+        response.subscribe((res) => {
+          if (res !== '') {
+            this.resetPage();
+            console.log("Page reset")
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logs Deleted', life: 3000 });
+          }
+          
+        });
+      }
+    });
+    console.log("Delete from Angular done")
   }
+  
 
   resetPage(): void{
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
