@@ -4,7 +4,9 @@ import { MessageService } from 'primeng/api';
 import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
 import { LightLog } from '../models/lightlog.model';
 import { User } from '../models/user.model';
+import { Product } from '../models/product.model';
 import { error } from 'console';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,35 @@ export class DataService {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
+  }
+
+  getProducts(): Observable<Product[]>{
+    this.msg.add({
+      severity: 'info',
+      summary: 'Information',
+      detail: 'Getting Managers from the database',
+      life: 2000,
+    });
+    return this.http.get<Product[]>(`${this.url}/products`).pipe(
+      tap((response) => {
+        this.msg.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Products were downloaded',
+          life: 2000,
+        });
+        return response;
+      }),
+      catchError((error) => {
+        this.msg.add({
+          severity: 'error',
+          summary: `Error ${error.status}`,
+          detail: `${error.statusText}`,
+          life: 2000,
+        });
+        return of([] as Product[])
+      })
+    )
   }
 
   getLightLogs(): Observable<LightLog[]> {

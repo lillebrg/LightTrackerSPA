@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { User } from '../../../models/user.model';
 import { DataService } from '../../../services/data.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { Observable } from 'rxjs'
+import { Product } from '../../../models/product.model';
 @Component({
   selector: 'app-createuser',
   standalone: true,
@@ -12,13 +13,18 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
   styleUrl: './createuser.component.css',
   providers: [MessageService, ConfirmationService]
 })
-export class CreateuserComponent {
+export class CreateuserComponent implements OnInit{
+  products$!: Observable<Product[]>;
   userPosted = <Boolean>{}
   // user : Observable<User>;
   user = <User>{};
   constructor(private data: DataService, private messageService: MessageService) {
   }
   anyany:any;
+
+  ngOnInit(): void {
+    
+  }
 
   showSuccess() {
     this.messageService.add({
@@ -36,10 +42,6 @@ export class CreateuserComponent {
     });
   }
   createUserSubmit(userForm: any) {
-    if (userForm.IsAdmin == "") {
-      userForm.IsAdmin = false;
-    }
-
     //username val
     if (userForm.UserName.length < 2) {
       this.showError("The User was not created! \n Username minimum length is 2 characters!");
@@ -52,13 +54,15 @@ export class CreateuserComponent {
       else {
         this.user.UserName = userForm.UserName;
         this.user.Password = userForm.Password;
+        this.user.IsAdmin = false;
+
         this.anyany = this.data.postUser(this.user).subscribe(result => {
           console.log("this is ananyna");
           console.log(this.anyany);
           console.log("this is resuklt");
           console.log(result.UserName);
           this.anyany = result;
-          if (result == null) {
+          if (this.anyany.isStopped == true) {
             this.showError("A problem occured. The User was not created!");
 
           }
@@ -67,6 +71,7 @@ export class CreateuserComponent {
           }
 
         });
+        console.log("this is post return val");
         console.log(this.anyany);
       }
 
