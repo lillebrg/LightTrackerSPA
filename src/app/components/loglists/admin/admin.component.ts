@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable} from 'rxjs';
+import { Observable, map} from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
 import { DataService } from '../../../services/data.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { ConfirmationService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { relative } from 'path';
 
 
 @Component({
@@ -30,6 +29,20 @@ export class AdminComponent implements OnInit{
 
   ngOnInit(): void {
     this.lightLogs$ = this.data.getLightLogs()
+    
+    this.lightLogs$ = this.lightLogs$.pipe(
+      map((logs: LightLog[]) => {
+        return logs.map((log: LightLog) => {
+          const dateSentFirstPart = log.dateSent.substring(0, 10);
+          const dateSentSecondPart = log.dateSent.substring(11,19);
+          // Map the split parts to the new FE_LightLog interface
+          return {
+            ...log,
+            dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts for illustration
+          };
+        });
+      })
+    );
   }
 
 
