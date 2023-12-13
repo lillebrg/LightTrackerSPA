@@ -105,28 +105,28 @@ export class DataService {
     );
   }
 
-  // deleteLightLogs(ids: number[]): Observable<string> {
-  //   return this.http.delete<string>('https://localhost:7090/lightlogs', ids).pipe(
-  //     tap((response) => {
-  //       this.msg.add({
-  //         severity: 'success',
-  //         summary: 'Success',
-  //         detail: 'LightLog was deleted.',
-  //         life: 2000,
-  //       });
-  //       return response;
-  //     }),
-  //     catchError((error) => {
-  //       this.msg.add({
-  //         severity: 'error',
-  //         summary: `Error ${error.status}`,
-  //         detail: `${error.statusText}`,
-  //         life: 2000,
-  //       });
-  //       return of('');
-  //     }),
-  //   );
-  // }
+  deleteLightLogs(ids: number[]): Observable<string> {
+    return this.http.delete<string>('https://localhost:7090/lightlogs').pipe(
+      tap((response) => {
+        this.msg.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'LightLog was deleted.',
+          life: 2000,
+        });
+        return response;
+      }),
+      catchError((error) => {
+        this.msg.add({
+          severity: 'error',
+          summary: `Error ${error.status}`,
+          detail: `${error.statusText}`,
+          life: 2000,
+        });
+        return of('');
+      }),
+    );
+  }
 
   postUser(user: User): Observable<User>{
     return this.http.post<User>(`${this.url}/users`, user).pipe()
