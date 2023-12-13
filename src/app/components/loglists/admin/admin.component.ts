@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, map} from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
-import { DataService } from '../../../services/data.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataService } from '../../../services/data.service';
+import { NavBar } from "../../shared/navbar/navbar.component";
 
 
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+    selector: 'app-admin',
+    standalone: true,
+    templateUrl: './admin.component.html',
+    styleUrl: './admin.component.css',
+    imports: [SharedModule, NavBar]
 })
 export class AdminComponent implements OnInit{
   lightLogs$!: Observable<LightLog[]>;
@@ -82,13 +83,13 @@ export class AdminComponent implements OnInit{
           if (res !== '') {
             this.resetPage();
             console.log("Page reset")
+            this.deletedIds = [];
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logs Deleted', life: 3000 });
           }
           
         });
       }
     });
-    console.log("Delete from Angular done")
   }
   
 
