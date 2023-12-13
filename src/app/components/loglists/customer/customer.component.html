@@ -1,1 +1,53 @@
-<p>customer works!</p>
+<app-navbar></app-navbar>
+<h1>Hello {{user.UserName}}!</h1>
+<p-confirmDialog></p-confirmDialog> 
+
+<p-toolbar styleClass="mb-4 gap-2">
+  <ng-template pTemplate="left">
+    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedLightLogs()" [disabled]="!selectedLightLogs || !selectedLightLogs.length"></button>
+  </ng-template>
+</p-toolbar>
+
+<ng-container *ngIf="lightLogs$ | async as entities"
+  ><p-table
+    [value]="entities"
+    [rows]="15"
+    [paginator]="true"
+    [(selection)]="selectedLightLogs"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+  <ng-template pTemplate="header">
+    <tr>
+        <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="arduinoid" style="width:15rem">productId <p-sortIcon field="productid"></p-sortIcon></th>
+        <th style="width: 1rem">Hours</th>
+        <th style="width: 1rem">Minutes</th>
+        <th style="width: 15rem">Seconds</th>
+        <th pSortableColumn="timeofday" style="min-width:25rem">Date<p-sortIcon field="timeofday"></p-sortIcon></th>
+        <th></th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-entity>
+  <tr>
+    <td>
+      <p-tableCheckbox [value]="entity"></p-tableCheckbox>
+    </td>
+    <td>{{ entity.productId }}</td>
+    <td>{{ entity.hours }}</td>
+    <td>{{ entity.minutes }}</td>
+    <td>{{ entity.seconds }}</td>
+    <td>{{ entity.dateSent }}</td>
+    <td>
+      <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLightLog(entity)"></button>
+    </td>
+  </tr>
+</ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">In total there are {{ entities ? entities.length : 0 }} entities.</div>
+    </ng-template>
+  </p-table></ng-container>
