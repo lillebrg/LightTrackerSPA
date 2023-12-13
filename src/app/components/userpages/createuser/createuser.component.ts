@@ -15,15 +15,14 @@ import { Product } from '../../../models/product.model';
 })
 export class CreateuserComponent implements OnInit{
   products$!: Observable<Product[]>;
-  userPosted = <Boolean>{}
-  // user : Observable<User>;
+  
+  //usermodel to send with http post
   user = <User>{};
   constructor(private data: DataService, private messageService: MessageService) {
   }
-  anyany:any;
 
   ngOnInit(): void {
-    
+    this.products$ = this.data.getProducts();
   }
 
   showSuccess() {
@@ -42,6 +41,7 @@ export class CreateuserComponent implements OnInit{
     });
   }
   createUserSubmit(userForm: any) {
+    console.log(userForm);
     //username val
     if (userForm.UserName.length < 2) {
       this.showError("The User was not created! \n Username minimum length is 2 characters!");
@@ -52,27 +52,29 @@ export class CreateuserComponent implements OnInit{
         this.showError("The User was not created! \n  Password minimum length is 8 characters!");;
       }
       else {
-        this.user.UserName = userForm.UserName;
-        this.user.Password = userForm.Password;
-        this.user.IsAdmin = false;
 
-        this.anyany = this.data.postUser(this.user).subscribe(result => {
-          console.log("this is ananyna");
-          console.log(this.anyany);
-          console.log("this is resuklt");
-          console.log(result.UserName);
-          this.anyany = result;
-          if (this.anyany.isStopped == true) {
-            this.showError("A problem occured. The User was not created!");
-
-          }
-          else {
+        //product
+        if(userForm.ProductId == null || userForm.ProductId == ""){
+          this.showError("The User was not created! \n  Choose a product");;
+        }
+        else{
+          this.user.UserName = userForm.UserName;
+          this.user.Password = userForm.Password;
+          this.user.IsAdmin = false;
+  
+          this.data.postUser(this.user).subscribe(result => {
+            console.log('POST request successful:', result);
             this.showSuccess();
+          },
+          (error)=> {
+            console.error('Error in POST request:', error);
+            this.showError("The User was not created! \n Unexpected error! try again later");
           }
-
-        });
-        console.log("this is post return val");
-        console.log(this.anyany);
+          
+          );
+          
+        }
+       
       }
 
     }
