@@ -8,10 +8,9 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MessageService, ConfirmationService} from 'primeng/api';
 import { DataService } from './services/data.service';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgbModule, BrowserAnimationsModule],
   providers: [provideClientHydration(),provideHttpClient(withFetch()) ,DataService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

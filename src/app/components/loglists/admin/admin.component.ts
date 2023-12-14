@@ -20,6 +20,7 @@ export class AdminComponent implements OnInit{
   Delete: any;
   selectedLightLogs: LightLog[] = [];
   deletedIds: number[] = [];
+  componentTitle: string = "";
   
   constructor(
     private data: DataService,
