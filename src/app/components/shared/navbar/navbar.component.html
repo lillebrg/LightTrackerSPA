@@ -1,10 +1,20 @@
 <div class="card">
-    <p-menubar [model]="items">
+    <p-menubar>
         <ng-template pTemplate="start">
-            <img src="../../../../assets/Images/Logo.png" height="40" class="mr-2" />
+            <div id="navbarstart">
+                <div class="flexcenter">
+                    <img src="../../../../assets/Images/Logo.png" height="100" class="logo" />
+                    <h2 id="title">{{componentTitle}}</h2>
+                </div>
+            </div>
         </ng-template>
+        
         <ng-template pTemplate="end">
-            <input type="text" pInputText placeholder="Search" class="w-full" />
+            <div class="flexcenter">
+                <h5 id="username">Hello {{user.UserName}}!</h5>
+                <button pButton pRipple label="Log out" class="p-button-danger" (click)="Logout()"></button>
+            </div>
+
         </ng-template>
     </p-menubar>
 </div>

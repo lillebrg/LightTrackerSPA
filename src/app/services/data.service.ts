@@ -84,6 +84,37 @@ export class DataService {
     );
   }
 
+  getCustomerLightLogs(productid: string): Observable<LightLog[]> {
+    console.log("inside api call")
+    this.msg.add({
+      severity: 'info',
+      summary: 'Information',
+      detail: 'Getting LightLogs from the database',
+      life: 2000,
+    });
+    return this.http.get<LightLog[]>(`${this.url}/lightlogs/${productid}`).pipe(
+      tap((response) => {
+        this.msg.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'LightLogs were downloaded',
+          life: 2000,
+        });
+        return response;
+      }),
+      catchError((error) => {
+        this.msg.add({
+          severity: 'error',
+          summary: `Error ${error.status}`,
+          detail: `${error.statusText}`,
+          life: 2000,
+        });
+        return of([] as LightLog[]);
+      }),
+    );
+  }
+
+
   deleteLightLog(id: string): Observable<string> {
      return this.http.delete<string>(`${this.url}/lightlogs/${id}`).pipe(
       tap((response) => {

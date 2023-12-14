@@ -5,7 +5,7 @@
 <ng-container *ngIf="lightLogs$ | async as entities"
   ><p-table
     [value]="entities"
-    [rows]="15"
+    [rows]="10"
     [paginator]="true"
     [(selection)]="selectedLightLogs"
     [rowHover]="true"
