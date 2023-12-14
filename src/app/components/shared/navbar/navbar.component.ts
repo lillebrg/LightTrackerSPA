@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
@@ -10,10 +10,13 @@ import { MenubarModule } from 'primeng/menubar';
   styleUrl: './navbar.component.css'
 })
 export class NavBar implements OnInit {
+    @Input() componentTitle: string = "";
   items: MenuItem[] = [];
 
   ngOnInit() {
-      this.items = [
+      this.items = [{
+        label: this.componentTitle
+      },
           {
               label: 'Edit',
               icon: 'pi pi-fw pi-pencil',
