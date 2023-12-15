@@ -20,7 +20,7 @@ export class NavBar {
         ProductId: "null",
         UserName: null,
         Password: null,
-        IsAdmin: null
+        isAdmin: null
       };
 
 

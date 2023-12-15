@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit{
     ProductId: "null",
     UserName: null,
     Password: null,
-    IsAdmin: true
+    isAdmin: true
   };
   
   constructor(
@@ -41,7 +41,7 @@ export class AdminComponent implements OnInit{
 
 
   ngOnInit(): void {
-    if (this.user.IsAdmin == false || this.user.IsAdmin == null){
+    if (this.user.isAdmin == false || this.user.isAdmin == null){
       this.router.navigate(['/login'])
     }
 
