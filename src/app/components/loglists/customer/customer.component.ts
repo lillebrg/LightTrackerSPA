@@ -27,7 +27,7 @@ export class CustomerComponent implements OnInit {
     ProductId: "1",
     UserName: "Philip",
     Password: "Passw0rd!",
-    IsAdmin: false
+    isAdmin: false
   };
   
   constructor(

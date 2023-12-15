@@ -60,7 +60,11 @@ export class CreateuserComponent implements OnInit{
         else{
           this.user.UserName = userForm.UserName;
           this.user.Password = userForm.Password;
-          this.user.IsAdmin = false;
+          this.user.ProductId = userForm.ProductId;
+          this.user.isAdmin = userForm.isAdmin;
+          if(userForm.isAdmin == ""){
+            this.user.isAdmin = false;
+          }
   
           this.data.postUser(this.user).subscribe(result => {
             console.log('POST request successful:', result);

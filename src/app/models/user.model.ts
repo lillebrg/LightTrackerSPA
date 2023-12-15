@@ -3,5 +3,5 @@ export interface User{
     ProductId: string;
     UserName: string;
     Password: string;
-    IsAdmin: boolean;
+    isAdmin: boolean;
 }
