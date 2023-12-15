@@ -40,7 +40,12 @@ export class CustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.lightLogs$ = this.data.getLightLogs()
+    if (this.user.UserName == null && this.user.Password == null){
+      this.router.navigate(['/login'])
+    }
+    console.log("before service call")
+    this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
+    console.log("after service call")
     
     this.lightLogs$ = this.lightLogs$.pipe(
       map((logs: LightLog[]) => {

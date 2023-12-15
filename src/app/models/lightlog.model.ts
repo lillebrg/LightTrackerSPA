@@ -2,7 +2,7 @@
 //same name as the data you are recieving to work.
 export interface LightLog{
     id: number;
-    productId: string
+    productId: string;
     hours: string;
     minutes: string;
     seconds: string;

@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
 import { NavBar } from "../../shared/navbar/navbar.component";
+import { User } from '../../../models/user.model';
 
 
 @Component({
@@ -21,6 +22,14 @@ export class AdminComponent implements OnInit{
   selectedLightLogs: LightLog[] = [];
   deletedIds: number[] = [];
   componentTitle: string = "";
+
+  user: User = {
+    Id: null,
+    ProductId: "null",
+    UserName: null,
+    Password: null,
+    IsAdmin: true
+  };
   
   constructor(
     private data: DataService,
@@ -32,6 +41,10 @@ export class AdminComponent implements OnInit{
 
 
   ngOnInit(): void {
+    if (this.user.IsAdmin == false || this.user.IsAdmin == null){
+      this.router.navigate(['/login'])
+    }
+
     this.lightLogs$ = this.data.getLightLogs()
     
     this.lightLogs$ = this.lightLogs$.pipe(
