@@ -6,6 +6,8 @@ import { LightLog } from '../models/lightlog.model';
 import { User } from '../models/user.model';
 import { Product } from '../models/product.model';
 import { error } from 'console';
+import { response } from 'express';
+
 
 @Injectable({
   providedIn: 'root'
@@ -131,4 +133,8 @@ export class DataService {
   postUser(user: User): Observable<User>{
     return this.http.post<User>(`${this.url}/users`, user).pipe()
   }
+
+  login(user: User): Observable<User>{
+    return this.http.get<User>(`${this.url}/user/?UserName=${user.UserName}&Password=${user.Password}`,)
+  } 
 }
