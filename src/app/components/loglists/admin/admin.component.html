@@ -1,16 +1,11 @@
-<h1>Admin Overview</h1>
 <p-confirmDialog></p-confirmDialog> 
 
-<p-toolbar styleClass="mb-4 gap-2">
-  <ng-template pTemplate="left">
-    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedLightLogs()" [disabled]="!selectedLightLogs || !selectedLightLogs.length"></button>
-  </ng-template>
-</p-toolbar>
+<app-navbar componentTitle="Admin Overview"></app-navbar>
 
 <ng-container *ngIf="lightLogs$ | async as entities"
   ><p-table
     [value]="entities"
-    [rows]="15"
+    [rows]="10"
     [paginator]="true"
     [(selection)]="selectedLightLogs"
     [rowHover]="true"
@@ -22,6 +17,8 @@
     <tr>
         <th style="width: 4rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th>    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedLightLogs()" [disabled]="!selectedLightLogs || !selectedLightLogs.length"></button>
         </th>
         <th pSortableColumn="arduinoid" style="width:15rem">productId <p-sortIcon field="productid"></p-sortIcon></th>
         <th style="width: 1rem">Hours</th>
@@ -36,6 +33,7 @@
     <td>
       <p-tableCheckbox [value]="entity"></p-tableCheckbox>
     </td>
+    <td></td>
     <td>{{ entity.productId }}</td>
     <td>{{ entity.hours }}</td>
     <td>{{ entity.minutes }}</td>
