@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map} from 'rxjs';
+import { Observable, filter, map} from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
 import { SharedModule } from '../../../shared/shared.module';
 import { ConfirmationService, MessageService  } from 'primeng/api';
@@ -17,12 +17,15 @@ import { NavBar } from "../../shared/navbar/navbar.component";
     imports: [SharedModule, NavBar]
 })
 export class CustomerComponent implements OnInit {
+
   lightLogs$!: Observable<LightLog[]>;
   Delete: any;
   selectedLightLogs: LightLog[] = [];
   deletedIds: number[] = [];
   sortField: string = 'dateSent';
   sortOrder: number = 1;
+  overviewopener: boolean = false;
+  overviewTime: string = "";
 
   user: User = {
     Id: "1",
@@ -31,6 +34,7 @@ export class CustomerComponent implements OnInit {
     Password: "Passw0rd!",
     isAdmin: false
   };
+
   
   constructor(
     private data: DataService,
@@ -43,7 +47,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.user.UserName == null && this.user.Password == null){
-      this.router.navigate(['/login'])
+      this.router.navigate(['/'])
     }
     this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
       .pipe(
@@ -121,9 +125,48 @@ export class CustomerComponent implements OnInit {
     });
   }
   
-  weeklyOverview() {
+openOverview() {
+  this.overviewopener = true;
+  }
+
+  showOverview(daysValue: number) {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate comparison
     
-    };
+    // Calculate date 7 days ago
+    const endDate = new Date(currentDate);
+    endDate.setDate(currentDate.getDate() - daysValue);
+
+    const filteredObjects$ = this.lightLogs$.pipe(
+      map(objects => {
+        return objects.filter(obj => {
+          const objTime = new Date(obj.dateSent);
+          return objTime >= endDate && objTime <= currentDate;
+        });
+      })
+    );
+
+    filteredObjects$.subscribe(filteredObjects => {
+      var seconds = 0
+      var minutes = 0
+      var hours = 0
+      filteredObjects.forEach(element => {
+        seconds += parseInt(element.seconds);
+        minutes += parseInt(element.minutes); 
+        hours += parseInt(element.hours);
+        
+        if(seconds >= 60){
+          seconds -= 60
+          minutes += 1
+        }
+        if(minutes >= 60){
+          minutes -= 60
+          hours += 1
+        }
+      });
+      this.overviewTime = `${hours}:${minutes}:${seconds}`
+    });
+  };
 
   resetPage(): void{
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

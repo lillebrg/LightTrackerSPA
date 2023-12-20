@@ -28,7 +28,7 @@
           Date
           <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
         </th>
-        <th style="width: 17rem"><button pButton pRipple label="Show Weekly Overview" (click)="weeklyOverview()"></button></th>
+        <th style="width: 5rem"><button pButton pRipple label="Overviews" (click)="openOverview()"></button></th>
     </tr>
 </ng-template>
 <ng-template pTemplate="body" let-entity>
@@ -51,3 +51,14 @@
       <div class="flex align-items-center justify-content-between">In total there are {{ entities ? entities.length : 0 }} entities.</div>
     </ng-template>
   </p-table></ng-container>
+
+  <p-dialog header="Overviews" [(visible)]="overviewopener" [style]="{width: '40vw'}">
+    <div class="overviewDiv">
+    <button pButton pRipple label="Daily Overview" (click)="showOverview(1)"></button>
+    <button pButton pRipple label="Weekly Overview" (click)="showOverview(7)"></button>
+    <button pButton pRipple label="Monthly Overview" (click)="showOverview(31)"></button>
+  </div>
+  <div>
+    <h3>{{overviewTime}}</h3>
+  </div>
+</p-dialog>
