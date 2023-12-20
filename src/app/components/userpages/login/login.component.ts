@@ -3,7 +3,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DataService } from '../../../services/data.service';
 import { User } from '../../../models/user.model';
-import { error } from 'console';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +14,21 @@ import { error } from 'console';
 })
 export class LoginComponent {
   user = <User>{};
-  constructor(private messageService: MessageService, private dataService: DataService) {
-  }
   loginResult: any;
+  userResult: User = {
+    id: null,
+    productId: "",
+    userName: null,
+    password: null,
+    isAdmin: null,
+  };
+
+
+  constructor(
+    private messageService: MessageService, 
+    private dataService: DataService,
+    private router: Router,) {
+  }
   ngOnInit(): void {
     
   }
@@ -38,12 +50,24 @@ export class LoginComponent {
   }
   
   onSubmit(loginForm: any) {
-    this.user.UserName = loginForm.UserName;
-    this.user.Password = loginForm.Password;
-    this.loginResult = this.dataService.login(this.user).subscribe(result => {
-      this.loginResult = result;
-      console.log(this.loginResult)
+    this.user.userName = loginForm.UserName;
+    this.user.password = loginForm.Password;
+    this.dataService.login(this.user).subscribe(result => {
       
+      this.userResult = {
+        id: result.id,
+        productId: result.productId,
+        userName: result.userName,
+        password: result.password,
+        isAdmin: result.isAdmin
+      };
+      
+      if(this.userResult.isAdmin == true){
+        this.router.navigate(['/adminlogs'], {queryParams: this.userResult})
+      }
+      else if(this.userResult.isAdmin == false){
+        this.router.navigate(['/customerlogs'], {queryParams: this.userResult})
+      }
       this.showSuccess();
     }, (error) =>{
       console.error('something went wong', error)

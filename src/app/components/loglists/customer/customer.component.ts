@@ -29,6 +29,7 @@ export class CustomerComponent implements OnInit {
   overviewopener: boolean = false;
   overviewTime: string = "";
   overviewPrice: string = "";
+  sendUser: any;
 
   //el API variables
   elPrices$!: Observable<ElectricPrices[]>;
@@ -38,11 +39,11 @@ export class CustomerComponent implements OnInit {
   elPriceVar: any;
 
   user: User = {
-    Id: "1",
-    ProductId: "3",
-    UserName: "Philip",
-    Password: "Passw0rd!",
-    isAdmin: false
+    id: null,
+    productId: "",
+    userName: null,
+    password: null,
+    isAdmin: null
   };
   
   constructor(
@@ -55,10 +56,23 @@ export class CustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.user.UserName == null && this.user.Password == null){
+    this.route.queryParams.subscribe(params => {
+      // Reconstructing the received data into the User object
+      this.user = {
+        id: params['id'],
+        productId: params['productId'],
+        userName: params['userName'],
+        password: params['password'],
+        isAdmin: params['isAdmin'],
+      };
+    });
+
+    console.log("fromcustomercomponent")
+    console.log(this.user)
+    if (this.user.userName == null && this.user.password == null){
       this.router.navigate(['/'])
     }
-    this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
+    this.lightLogs$ = this.data.getCustomerLightLogs(this.user.productId)
       .pipe(
         map((logs: LightLog[]) => {
           return logs.map((log: LightLog) => {
@@ -229,7 +243,7 @@ export class CustomerComponent implements OnInit {
           //øre
           let priceForSesh = (lightKWH * elPriceAPI.DKK_per_kWh) * 100;
           this.elPriceVar = priceForSesh.toFixed(2);
-          this.overviewPrice = priceForSesh.toFixed(4);
+          this.overviewPrice = "Price for the light: " + priceForSesh.toFixed(2) + " øre daily";
 
         } else {
           console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");

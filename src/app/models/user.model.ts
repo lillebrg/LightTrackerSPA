@@ -1,7 +1,7 @@
 export interface User{
-    Id: string | null;
-    ProductId: string;
-    UserName: string | null;
-    Password: string | null;
+    id: string | null;
+    productId: string;
+    userName: string | null;
+    password: string | null;
     isAdmin: boolean | null;
 }

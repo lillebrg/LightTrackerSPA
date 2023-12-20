@@ -9,17 +9,18 @@
             </div>
         </ng-template>
         
-        <ng-template pTemplate="end">
-            <div class="flexcenter" *ngIf="!user.isAdmin || user.isAdmin == null">
-                <h5 id="username">Hello {{user.UserName}}!</h5>
-                <button pButton pRipple label="Log out" class="p-button-danger" (click)="Logout()"></button>
-            </div>
+        
+        <ng-template pTemplate="end" >
             <div class="flexcenter" *ngIf="user.isAdmin">
-                <h5 id="username">Hello {{user.UserName}}!</h5>
+                <h5 id="username">Hello {{user.userName}}!</h5>
                 <div id="adminbtns">
                     <button pButton pRipple label="Log out" class="p-button-danger" (click)="Logout()"></button>
                     <button pButton pRipple label="Create user" (click)="CreateUser()"></button>
                 </div>
+            </div>
+            <div class="flexcenter" *ngIf="!user.isAdmin">
+                <h5 id="username">Hello {{user.userName}}!</h5>
+                <button pButton pRipple label="Log out" class="p-button-danger" (click)="Logout()"></button>
             </div>
         </ng-template>
     </p-menubar>

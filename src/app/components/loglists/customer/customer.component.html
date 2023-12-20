@@ -1,6 +1,7 @@
 <p-confirmDialog></p-confirmDialog> 
 
 <app-navbar componentTitle="Log Overview" [user]="user"></app-navbar>
+
 <ng-container *ngIf="lightLogs$ | async as entities"
   ><p-table
     [value]="entities"

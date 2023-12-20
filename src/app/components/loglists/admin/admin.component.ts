@@ -26,11 +26,11 @@ export class AdminComponent implements OnInit {
   
 
   user: User = {
-    Id: "4",
-    ProductId: "4",
-    UserName: "phst0001",
-    Password: "123123",
-    isAdmin: false
+    id: null,
+    productId: "",
+    userName: null,
+    password: null,
+    isAdmin: null,
   };
 
   constructor(
@@ -43,8 +43,21 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      // Reconstructing the received data into the User object
+      this.user = {
+        id: params['id'],
+        productId: params['productId'],
+        userName: params['userName'],
+        password: params['password'],
+        isAdmin: params['isAdmin'],
+      };
+
+      console.log(this.user);
+    });
+
     if (this.user.isAdmin == false || this.user.isAdmin == null){
-      this.router.navigate(['/login'])
+      this.router.navigate(['/'])
     }
 
     this.lightLogs$ = this.data.getLightLogs()

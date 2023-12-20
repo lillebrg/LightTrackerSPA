@@ -58,11 +58,11 @@ export class CreateuserComponent implements OnInit{
           this.showError("The User was not created! \n  Choose a product");;
         }
         else{
-          this.user.UserName = userForm.UserName;
-          this.user.Password = userForm.Password;
-          this.user.ProductId = userForm.ProductId;
+          this.user.userName = userForm.UserName;
+          this.user.password = userForm.Password;
+          this.user.productId = userForm.ProductId;
           this.user.isAdmin = userForm.isAdmin;
-          if(userForm.isAdmin == ""){
+          if(userForm.isAdmin === ""){
             this.user.isAdmin = false;
           }
   
