@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
 import { NavBar } from "../../shared/navbar/navbar.component";
 import { User } from '../../../models/user.model';
-import { ElectricPrices } from '../../../models/elecprices.model'
+
 
 @Component({
   selector: 'app-admin',
@@ -23,19 +23,14 @@ export class AdminComponent implements OnInit {
   deletedIds: number[] = [];
   componentTitle: string = "";
   timeSesPerHour: Number[] = [];
-  //el API variables
-  elPrices$!: Observable<ElectricPrices[]>;
-  dateToday = new Date();
-
-  showElPrice: boolean = false;
-  elPriceVar: any;
+  
 
   user: User = {
     Id: "4",
     ProductId: "4",
     UserName: "phst0001",
     Password: "123123",
-    isAdmin: true
+    isAdmin: false
   };
 
   constructor(
@@ -68,45 +63,7 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  createElPrice(lightlog: any) {
 
-    let endDate = new Date(lightlog.dateSent);
-    let startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(),
-      endDate.getHours() - lightlog.hours, endDate.getMinutes() - lightlog.minutes, endDate.getSeconds() - lightlog.seconds);
-    // this.timeSesPerHour.push(startDate.getHours());
-    // for (let index = 0; index < endDate.getHours() - startDate.getHours() +1; index++) {
-    //   this.timeSesPerHour.push(startDate.getHours() + 1);
-    // }
-    var elPriceAPI;
-
-    this.elPrices$ = this.data.getElecPrices(endDate);
-    this.elPrices$.subscribe(
-      (response: ElectricPrices[]) => {
-        elPriceAPI = response.at(endDate.getHours());
-        //chatgpt
-        if (elPriceAPI && typeof elPriceAPI.DKK_per_kWh === 'number' && !isNaN(elPriceAPI.DKK_per_kWh)) {
-          // Your calculations involving elPriceAPI.DKK_per_kWh
-          let lightHoursUp = lightlog.hours + (lightlog.minutes / 60) + (lightlog.seconds / 60 / 60);
-
-          // calc to KWH 
-          let lightKWH = 40 * lightHoursUp / 1000;
-
-          //øre
-          let priceForSesh = (lightKWH * elPriceAPI.DKK_per_kWh) * 100;
-          console.log(priceForSesh);
-          this.elPriceVar = priceForSesh.toFixed(2);
-        } else {
-          console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");
-          // Handle the case where elPriceAPI is undefined or DKK_per_kWh is not a valid number
-        }
-      },
-      (error) => {
-        console.error(error);
-        // Handle errors here
-      }
-    );
-    this.showElPrice = true;
-  }
 
   deleteLightLog(entity: any): void {
     this.confirmationService.confirm({

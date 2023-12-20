@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, filter, map} from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
 import { SharedModule } from '../../../shared/shared.module';
-import { ConfirmationService, MessageService  } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
 import { User } from '../../../models/user.model';
 import { NavBar } from "../../shared/navbar/navbar.component";
+import { ElectricPrices } from '../../../models/elecprices.model'
 
 
 @Component({
-    selector: 'app-customer',
-    standalone: true,
-    templateUrl: './customer.component.html',
-    styleUrl: './customer.component.css',
-    imports: [SharedModule, NavBar]
+  selector: 'app-customer',
+  standalone: true,
+  templateUrl: './customer.component.html',
+  styleUrl: './customer.component.css',
+  imports: [SharedModule, NavBar]
 })
 export class CustomerComponent implements OnInit {
 
@@ -24,8 +25,6 @@ export class CustomerComponent implements OnInit {
   deletedIds: number[] = [];
   sortField: string = 'dateSent';
   sortOrder: number = 1;
-  overviewopener: boolean = false;
-  overviewTime: string = "";
 
   user: User = {
     Id: "1",
@@ -34,27 +33,26 @@ export class CustomerComponent implements OnInit {
     Password: "Passw0rd!",
     isAdmin: false
   };
-
   
   constructor(
     private data: DataService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute){}
-   
+    private route: ActivatedRoute) { }
+
 
 
   ngOnInit(): void {
     if (this.user.UserName == null && this.user.Password == null){
-      this.router.navigate(['/'])
+      this.router.navigate(['/login'])
     }
     this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
       .pipe(
         map((logs: LightLog[]) => {
           return logs.map((log: LightLog) => {
             const dateSentFirstPart = log.dateSent.substring(0, 10);
-            const dateSentSecondPart = log.dateSent.substring(11,19);
+            const dateSentSecondPart = log.dateSent.substring(11, 19);
             return {
               ...log,
               dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
@@ -84,6 +82,11 @@ export class CustomerComponent implements OnInit {
     });
   }
   
+
+  
+
+
+
   deleteLightLog(entity: any): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete lightlog number ' + entity.id + '?',
@@ -97,7 +100,8 @@ export class CustomerComponent implements OnInit {
           }
         });
       }
-  }); 
+  });
+    
   }
 
   deleteSelectedLightLogs() {
@@ -119,61 +123,53 @@ export class CustomerComponent implements OnInit {
             this.deletedIds = [];
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logs Deleted', life: 3000 });
           }
-          
+
         });
       }
     });
   }
   
-openOverview() {
-  this.overviewopener = true;
-  }
 
-  showOverview(daysValue: number) {
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate comparison
-    
-    // Calculate date 7 days ago
-    const endDate = new Date(currentDate);
-    endDate.setDate(currentDate.getDate() - daysValue);
-
-    const filteredObjects$ = this.lightLogs$.pipe(
-      map(objects => {
-        return objects.filter(obj => {
-          const objTime = new Date(obj.dateSent);
-          return objTime >= endDate && objTime <= currentDate;
-        });
-      })
-    );
-
-    filteredObjects$.subscribe(filteredObjects => {
-      var seconds = 0
-      var minutes = 0
-      var hours = 0
-      filteredObjects.forEach(element => {
-        seconds += parseInt(element.seconds);
-        minutes += parseInt(element.minutes); 
-        hours += parseInt(element.hours);
-        
-        if(seconds >= 60){
-          seconds -= 60
-          minutes += 1
-        }
-        if(minutes >= 60){
-          minutes -= 60
-          hours += 1
-        }
-      });
-      this.overviewTime = `${hours}:${minutes}:${seconds}`
-    });
-  };
-
-  resetPage(): void{
+  resetPage(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'],{
+    this.router.navigate(['./'], {
       relativeTo: this.route
     })
+  }
+
+  //electric prices
+  createElPrice(lightlog: any) {
+    var elPriceAPI;
+    let endDate = new Date(lightlog.dateSent);
+
+    this.elPrices$ = this.data.getElecPrices(endDate);
+    this.elPrices$.subscribe(
+      (response: ElectricPrices[]) => {
+        elPriceAPI = response.at(endDate.getHours());
+        //chatgpt
+        if (elPriceAPI && typeof elPriceAPI.DKK_per_kWh === 'number' && !isNaN(elPriceAPI.DKK_per_kWh)) {
+          // Your calculations involving elPriceAPI.DKK_per_kWh
+          let lightHoursUp = lightlog.hours + (lightlog.minutes / 60) + (lightlog.seconds / 60 / 60);
+
+          // calc to KWH 
+          let lightKWH = 40 * lightHoursUp / 1000;
+
+          //øre
+          let priceForSesh = (lightKWH * elPriceAPI.DKK_per_kWh) * 100;
+          console.log(priceForSesh);
+          this.elPriceVar = priceForSesh.toFixed(2);
+        } else {
+          console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");
+          // Handle the case where elPriceAPI is undefined or DKK_per_kWh is not a valid number
+        }
+      },
+      (error) => {
+        console.error(error);
+        // Handle errors here
+      }
+    );
+    this.showElPrice = true;
   }
 
 }
