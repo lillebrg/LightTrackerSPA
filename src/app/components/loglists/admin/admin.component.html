@@ -25,6 +25,7 @@
         <th style="width: 1rem">Minutes</th>
         <th style="width: 15rem">Seconds</th>
         <th pSortableColumn="timeofday" style="min-width:25rem">Date<p-sortIcon field="timeofday"></p-sortIcon></th>
+        <th>Price</th>
         <th></th>
     </tr>
 </ng-template>
@@ -40,6 +41,9 @@
     <td>{{ entity.seconds }}</td>
     <td>{{ entity.dateSent }}</td>
     <td>
+      <button pButton pRipple (click)="createElPrice(entity)">Calculate price</button>
+    </td>
+    <td>
       <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLightLog(entity)"></button>
     </td>
   </tr>
@@ -48,3 +52,9 @@
       <div class="flex align-items-center justify-content-between">In total there are {{ entities ? entities.length : 0 }} entities.</div>
     </ng-template>
   </p-table></ng-container>
+
+
+  <!--  for showing price t(emporary) -->
+  <p-dialog header="Electric price for this session" [(visible)]="showElPrice" [style]="{width: '15vw'}">
+    <p>{{elPriceVar}} Øre</p>
+</p-dialog>
