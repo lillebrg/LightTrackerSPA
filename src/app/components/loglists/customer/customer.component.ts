@@ -21,6 +21,8 @@ export class CustomerComponent implements OnInit {
   Delete: any;
   selectedLightLogs: LightLog[] = [];
   deletedIds: number[] = [];
+  sortField: string = 'dateSent';
+  sortOrder: number = 1;
 
   user: User = {
     Id: "1",
@@ -43,23 +45,43 @@ export class CustomerComponent implements OnInit {
     if (this.user.UserName == null && this.user.Password == null){
       this.router.navigate(['/login'])
     }
-    console.log("before service call")
     this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
-    console.log("after service call")
-    
+      .pipe(
+        map((logs: LightLog[]) => {
+          return logs.map((log: LightLog) => {
+            const dateSentFirstPart = log.dateSent.substring(0, 10);
+            const dateSentSecondPart = log.dateSent.substring(11,19);
+            return {
+              ...log,
+              dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
+            };
+          });
+        }),
+        map((logs: LightLog[]) => this.sortData(logs)) // Sort data initially
+      );
+  }
+
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = (event.order === 1) ? 1 : -1;
+
     this.lightLogs$ = this.lightLogs$.pipe(
-      map((logs: LightLog[]) => {
-        return logs.map((log: LightLog) => {
-          const dateSentFirstPart = log.dateSent.substring(0, 10);
-          const dateSentSecondPart = log.dateSent.substring(11,19);
-          return {
-            ...log,
-            dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
-          };
-        });
-      })
+      map((logs: LightLog[]) => this.sortData(logs)) // Sort data on p-sortIcon click
     );
   }
+
+  sortData(logs: LightLog[]): LightLog[] {
+    return logs.sort((a, b) => {
+      const valueA = (a as any)[this.sortField]; // Type assertion to any
+      const valueB = (b as any)[this.sortField]; // Type assertion to any
+      if (valueA < valueB) return -1 * this.sortOrder;
+      if (valueA > valueB) return 1 * this.sortOrder;
+      return 0;
+    });
+  }
+  
+
+  
 
 
 

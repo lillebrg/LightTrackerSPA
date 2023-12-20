@@ -7,10 +7,10 @@ import { CustomerComponent } from './components/loglists/customer/customer.compo
 
 
 const routes: Routes = [
-  {path: '', component: AdminComponent},
+  {path: 'adminlogs', component: AdminComponent},
   {path: 'customerlogs', component: CustomerComponent},
   {path: 'createuser', component: CreateuserComponent},
-  {path: 'login', component: LoginComponent},
+  {path: '', component: LoginComponent},
 
 ];
 

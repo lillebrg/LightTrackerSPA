@@ -24,10 +24,10 @@ export class AdminComponent implements OnInit{
   componentTitle: string = "";
 
   user: User = {
-    Id: null,
-    ProductId: "null",
-    UserName: null,
-    Password: null,
+    Id: "4",
+    ProductId: "4",
+    UserName: "phst0001",
+    Password: "123123",
     isAdmin: true
   };
   
