@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map} from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { LightLog } from '../../../models/lightlog.model';
 import { SharedModule } from '../../../shared/shared.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -10,48 +10,50 @@ import { User } from '../../../models/user.model';
 
 
 @Component({
-    selector: 'app-admin',
-    standalone: true,
-    templateUrl: './admin.component.html',
-    styleUrl: './admin.component.css',
-    imports: [SharedModule, NavBar]
+  selector: 'app-admin',
+  standalone: true,
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css',
+  imports: [SharedModule, NavBar]
 })
-export class AdminComponent implements OnInit{
+export class AdminComponent implements OnInit {
   lightLogs$!: Observable<LightLog[]>;
   Delete: any;
   selectedLightLogs: LightLog[] = [];
   deletedIds: number[] = [];
   componentTitle: string = "";
+  timeSesPerHour: Number[] = [];
+  
 
   user: User = {
     Id: "4",
     ProductId: "4",
     UserName: "phst0001",
     Password: "123123",
-    isAdmin: true
+    isAdmin: false
   };
-  
+
   constructor(
     private data: DataService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute){}
-   
+    private route: ActivatedRoute) { }
+
 
 
   ngOnInit(): void {
-    /*if (this.user.isAdmin == false || this.user.isAdmin == null){
+    if (this.user.isAdmin == false || this.user.isAdmin == null){
       this.router.navigate(['/login'])
-    }*/
+    }
 
     this.lightLogs$ = this.data.getLightLogs()
-    
+
     this.lightLogs$ = this.lightLogs$.pipe(
       map((logs: LightLog[]) => {
         return logs.map((log: LightLog) => {
           const dateSentFirstPart = log.dateSent.substring(0, 10);
-          const dateSentSecondPart = log.dateSent.substring(11,19);
+          const dateSentSecondPart = log.dateSent.substring(11, 19);
           return {
             ...log,
             dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
@@ -76,8 +78,8 @@ export class AdminComponent implements OnInit{
           }
         });
       }
-  });
-    
+    });
+
   }
 
 
@@ -100,20 +102,20 @@ export class AdminComponent implements OnInit{
             this.deletedIds = [];
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logs Deleted', life: 3000 });
           }
-          
+
         });
       }
     });
   }
-  
 
-  resetPage(): void{
+
+  resetPage(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'],{
+    this.router.navigate(['./'], {
       relativeTo: this.route
     })
   }
 
-
 }
+

@@ -28,7 +28,9 @@
           Date
           <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
         </th>
+        <th>Price</th>
         <th></th>
+        <th style="width: 5rem"><button pButton pRipple label="Overviews" (click)="openOverview()"></button></th>
     </tr>
 </ng-template>
 <ng-template pTemplate="body" let-entity>
@@ -42,6 +44,9 @@
     <td>{{ entity.minutes }}</td>
     <td>{{ entity.seconds }}</td>
     <td>{{ entity.dateSent }}</td>
+    <td>
+      <button pButton pRipple (click)="createElPrice(entity)">Calculate price</button>
+    </td>
     <td>
       <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLightLog(entity)"></button>
     </td>

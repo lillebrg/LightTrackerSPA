@@ -115,7 +115,6 @@ export class DataService {
   }
 
   getCustomerLightLogs(productid: string): Observable<LightLog[]> {
-    console.log("inside api call")
     this.msg.add({
       severity: 'info',
       summary: 'Information',

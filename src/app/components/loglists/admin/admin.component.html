@@ -1,6 +1,6 @@
 <p-confirmDialog></p-confirmDialog> 
 
-<app-navbar componentTitle="Admin Overview"></app-navbar>
+<app-navbar componentTitle="Admin Overview" [user]="user"></app-navbar>
 
 <ng-container *ngIf="lightLogs$ | async as entities"
   ><p-table
@@ -25,6 +25,7 @@
         <th style="width: 1rem">Minutes</th>
         <th style="width: 15rem">Seconds</th>
         <th pSortableColumn="timeofday" style="min-width:25rem">Date<p-sortIcon field="timeofday"></p-sortIcon></th>
+        
         <th></th>
     </tr>
 </ng-template>
@@ -39,6 +40,7 @@
     <td>{{ entity.minutes }}</td>
     <td>{{ entity.seconds }}</td>
     <td>{{ entity.dateSent }}</td>
+    
     <td>
       <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLightLog(entity)"></button>
     </td>
@@ -48,3 +50,5 @@
       <div class="flex align-items-center justify-content-between">In total there are {{ entities ? entities.length : 0 }} entities.</div>
     </ng-template>
   </p-table></ng-container>
+
+
