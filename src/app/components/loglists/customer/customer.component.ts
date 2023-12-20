@@ -42,9 +42,9 @@ export class CustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.user.UserName == null && this.user.Password == null){
+    /*if (this.user.UserName == null && this.user.Password == null){
       this.router.navigate(['/login'])
-    }
+    }*/
     this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
       .pipe(
         map((logs: LightLog[]) => {

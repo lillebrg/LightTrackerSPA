@@ -1,7 +1,7 @@
-<body class="bodyColor">
+<div class="bodyColor">
 
   <div class="signin-content text-center container">
-    <form (ngSubmit)="onSubmit(loginForm.value)" #loginForm="ngForm">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm.value)" >
       <div class="boxShadow">
         <img src="assets/Images/Logo.png" class="logoImg" alt="Image">
         <br>
@@ -13,4 +13,4 @@
       </div>
     </form>
   </div>
-</body>
+</div>

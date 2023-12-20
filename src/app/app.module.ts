@@ -8,10 +8,11 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MessageService, ConfirmationService} from 'primeng/api';
 import { DataService } from './services/data.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgbModule, BrowserAnimationsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgbModule, BrowserAnimationsModule, FormsModule],
   providers: [provideClientHydration(),provideHttpClient(withFetch()) ,DataService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })

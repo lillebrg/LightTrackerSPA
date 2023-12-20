@@ -41,9 +41,9 @@ export class AdminComponent implements OnInit{
 
 
   ngOnInit(): void {
-    if (this.user.isAdmin == false || this.user.isAdmin == null){
+    /*if (this.user.isAdmin == false || this.user.isAdmin == null){
       this.router.navigate(['/login'])
-    }
+    }*/
 
     this.lightLogs$ = this.data.getLightLogs()
     
