@@ -12,19 +12,31 @@ import { Router } from '@angular/router';
 })
 export class NavBar {
 
+
     constructor(private router: Router) { }
 
     @Input() componentTitle: string = "";
     @Input() user: User = {
+      Id: null,
+      ProductId: '',
+      UserName: null,
+      Password: null,
+      isAdmin: null
+    };
+
+
+    Logout() {
+       this.user = {
         Id: null,
-        ProductId: "null",
+        ProductId: '',
         UserName: null,
         Password: null,
         isAdmin: null
       };
-
-
-    Logout() {
-    this.router.navigate(['/login'])
+    this.router.navigate([''])
     }
+
+    CreateUser() {
+      this.router.navigate(['/createuser'])
+      }
 }

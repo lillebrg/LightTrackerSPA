@@ -195,4 +195,8 @@ export class DataService {
   postUser(user: User): Observable<User>{
     return this.http.post<User>(`${this.url}/users`, user).pipe()
   }
+
+  login(user: User): Observable<User>{
+    return this.http.get<User>(`${this.url}/user/?UserName=${user.UserName}&Password=${user.Password}`,)
+  } 
 }

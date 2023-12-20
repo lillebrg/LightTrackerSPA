@@ -20,11 +20,14 @@
         <th>
           <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedLightLogs()" [disabled]="!selectedLightLogs || !selectedLightLogs.length"></button>
         </th>
-        <th pSortableColumn="arduinoid" style="width:15rem">productId <p-sortIcon field="productid"></p-sortIcon></th>
-        <th style="width: 1rem">Hours</th>
-        <th style="width: 1rem">Minutes</th>
-        <th style="width: 15rem">Seconds</th>
-        <th pSortableColumn="timeofday" style="min-width:25rem">Date<p-sortIcon field="timeofday"></p-sortIcon></th>
+        <th style="width:10rem">productId</th>
+        <th style="width: 0.5rem">Hours</th>
+        <th style="width: 0.5rem">Minutes</th>
+        <th style="width: 10rem">Seconds</th>
+        <th pSortableColumn="dateSent" style="width:50rem">
+          Date
+          <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
+        </th>
         <th></th>
     </tr>
 </ng-template>
@@ -33,7 +36,7 @@
     <td>
       <p-tableCheckbox [value]="entity"></p-tableCheckbox>
     </td>
-    <td></td>
+    <td style="width: 2rem;"></td>
     <td>{{ entity.productId }}</td>
     <td>{{ entity.hours }}</td>
     <td>{{ entity.minutes }}</td>
