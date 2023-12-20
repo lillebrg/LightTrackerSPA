@@ -28,7 +28,7 @@
           Date
           <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
         </th>
-        <th></th>
+        <th style="width: 17rem"><button pButton pRipple label="Show Weekly Overview" (click)="weeklyOverview()"></button></th>
     </tr>
 </ng-template>
 <ng-template pTemplate="body" let-entity>

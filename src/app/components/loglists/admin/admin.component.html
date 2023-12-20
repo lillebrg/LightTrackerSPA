@@ -1,6 +1,6 @@
 <p-confirmDialog></p-confirmDialog> 
 
-<app-navbar componentTitle="Admin Overview"></app-navbar>
+<app-navbar componentTitle="Admin Overview" [user]="user"></app-navbar>
 
 <ng-container *ngIf="lightLogs$ | async as entities"
   ><p-table

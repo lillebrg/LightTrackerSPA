@@ -80,11 +80,6 @@ export class CustomerComponent implements OnInit {
     });
   }
   
-
-  
-
-
-
   deleteLightLog(entity: any): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete lightlog number ' + entity.id + '?',
@@ -98,10 +93,8 @@ export class CustomerComponent implements OnInit {
           }
         });
       }
-  });
-    
+  }); 
   }
-
 
   deleteSelectedLightLogs() {
     this.confirmationService.confirm({
@@ -128,6 +121,9 @@ export class CustomerComponent implements OnInit {
     });
   }
   
+  weeklyOverview() {
+    
+    };
 
   resetPage(): void{
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
