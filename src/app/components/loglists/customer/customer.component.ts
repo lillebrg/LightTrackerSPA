@@ -8,6 +8,7 @@ import { DataService } from '../../../services/data.service';
 import { User } from '../../../models/user.model';
 import { NavBar } from "../../shared/navbar/navbar.component";
 import { ElectricPrices } from '../../../models/elecprices.model'
+import { __values } from 'tslib';
 
 
 @Component({
@@ -25,10 +26,20 @@ export class CustomerComponent implements OnInit {
   deletedIds: number[] = [];
   sortField: string = 'dateSent';
   sortOrder: number = 1;
+  overviewopener: boolean = false;
+  overviewTime: string = "";
+  overviewPrice: string = "";
+
+  //el API variables
+  elPrices$!: Observable<ElectricPrices[]>;
+  dateToday = new Date();
+
+  showElPrice: boolean = false;
+  elPriceVar: any;
 
   user: User = {
     Id: "1",
-    ProductId: "1",
+    ProductId: "3",
     UserName: "Philip",
     Password: "Passw0rd!",
     isAdmin: false
@@ -45,7 +56,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.user.UserName == null && this.user.Password == null){
-      this.router.navigate(['/login'])
+      this.router.navigate(['/'])
     }
     this.lightLogs$ = this.data.getCustomerLightLogs(this.user.ProductId)
       .pipe(
@@ -81,11 +92,6 @@ export class CustomerComponent implements OnInit {
       return 0;
     });
   }
-  
-
-  
-
-
 
   deleteLightLog(entity: any): void {
     this.confirmationService.confirm({
@@ -129,6 +135,66 @@ export class CustomerComponent implements OnInit {
     });
   }
   
+  openOverview() {
+    this.overviewTime = ""
+    this.overviewPrice = ""
+    this.overviewopener = true;
+    }
+  
+    showOverview(daysValue: number) {
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate comparison
+      
+      // Calculate date 7 days ago
+      const endDate = new Date(currentDate);
+      endDate.setDate(currentDate.getDate() - daysValue);
+  
+      const filteredObjects$ = this.lightLogs$.pipe(
+        map(objects => {
+          return objects.filter(obj => {
+            const objTime = new Date(obj.dateSent);
+            return objTime >= endDate && objTime <= currentDate;
+          });
+        })
+      );
+      
+  
+      filteredObjects$.subscribe(filteredObjects => {
+        console.log(filteredObjects)
+        var seconds = 0
+        var minutes = 0
+        var hours = 0
+        filteredObjects.forEach(element => {
+          seconds = parseInt(element.seconds);
+          minutes += parseInt(element.minutes); 
+          hours += parseInt(element.hours);
+          
+          if(seconds >= 60){
+            seconds -= 60
+            minutes += 1
+          }
+          if(minutes >= 60){
+            minutes -= 60
+            hours += 1
+          }
+          
+        });
+        
+        this.createElPrice(seconds, minutes, hours, currentDate.toString())
+
+        if(daysValue == 1){
+          this.overviewTime = `Light is on: ${hours}:${minutes}:${seconds} daily`
+        }
+        else if(daysValue == 7)
+        {
+          this.overviewTime = `Light is on: ${hours}:${minutes}:${seconds} weekly`
+        }
+        else{
+          this.overviewTime = `Light is on: ${hours}:${minutes}:${seconds} montly`
+        }
+      });
+      
+    };
 
   resetPage(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -138,10 +204,15 @@ export class CustomerComponent implements OnInit {
     })
   }
 
-  //electric prices
-  createElPrice(lightlog: any) {
+  openElPrice(seconds: number, minutes: number, hours: number, date: string){
+    this.createElPrice(seconds, minutes, hours, date);
+    this.showElPrice = true;
+  }
+
+   //electric prices
+   createElPrice(seconds: number, minutes: number, hours: number, date: string) {
     var elPriceAPI;
-    let endDate = new Date(lightlog.dateSent);
+    let endDate = new Date(date);
 
     this.elPrices$ = this.data.getElecPrices(endDate);
     this.elPrices$.subscribe(
@@ -150,15 +221,16 @@ export class CustomerComponent implements OnInit {
         //chatgpt
         if (elPriceAPI && typeof elPriceAPI.DKK_per_kWh === 'number' && !isNaN(elPriceAPI.DKK_per_kWh)) {
           // Your calculations involving elPriceAPI.DKK_per_kWh
-          let lightHoursUp = lightlog.hours + (lightlog.minutes / 60) + (lightlog.seconds / 60 / 60);
+          let lightHoursUp = hours + (minutes / 60) + (seconds / 60 / 60);
 
           // calc to KWH 
           let lightKWH = 40 * lightHoursUp / 1000;
 
           //øre
           let priceForSesh = (lightKWH * elPriceAPI.DKK_per_kWh) * 100;
-          console.log(priceForSesh);
           this.elPriceVar = priceForSesh.toFixed(2);
+          this.overviewPrice = priceForSesh.toFixed(4);
+
         } else {
           console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");
           // Handle the case where elPriceAPI is undefined or DKK_per_kWh is not a valid number
@@ -169,7 +241,7 @@ export class CustomerComponent implements OnInit {
         // Handle errors here
       }
     );
-    this.showElPrice = true;
+    
   }
 
 }

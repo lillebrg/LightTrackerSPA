@@ -29,7 +29,6 @@
           <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
         </th>
         <th>Price</th>
-        <th></th>
         <th style="width: 5rem"><button pButton pRipple label="Overviews" (click)="openOverview()"></button></th>
     </tr>
 </ng-template>
@@ -45,7 +44,7 @@
     <td>{{ entity.seconds }}</td>
     <td>{{ entity.dateSent }}</td>
     <td>
-      <button pButton pRipple (click)="createElPrice(entity)">Calculate price</button>
+      <button pButton pRipple (click)="openElPrice(entity.seconds, entity.minutes, entity.hours, entity.dateSent)">Calculate price</button>
     </td>
     <td>
       <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLightLog(entity)"></button>
@@ -56,3 +55,20 @@
       <div class="flex align-items-center justify-content-between">In total there are {{ entities ? entities.length : 0 }} entities.</div>
     </ng-template>
   </p-table></ng-container>
+
+  <p-dialog header="Overviews" [(visible)]="overviewopener" [style]="{width: '40vw'}">
+    <div class="overviewDiv">
+      <button pButton pRipple label="Daily Overview" (click)="showOverview(1)"></button>
+      <button pButton pRipple label="Weekly Overview" (click)="showOverview(7)"></button>
+      <button pButton pRipple label="Monthly Overview" (click)="showOverview(31)"></button>
+    </div>
+    <div class="overviewData">
+      <h3>{{overviewTime}}</h3>
+      <h3>{{overviewPrice}}</h3>
+   </div>
+</p-dialog>
+
+<!--  for showing price -->
+<p-dialog header="Electric price for this session" [(visible)]="showElPrice" [style]="{width: '20vw'}">
+  <p>{{elPriceVar}} Øre</p>
+</p-dialog>
