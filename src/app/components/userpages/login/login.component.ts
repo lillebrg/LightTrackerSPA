@@ -24,8 +24,8 @@ export class LoginComponent {
   showSuccess() {
     this.messageService.add({
       severity: "success",
-      summary: "User Created!",
-      detail: "The user was created successfully!"
+      summary: "User Logged in!",
+      detail: "User has succesfully logged in"
     });
 
   }
@@ -40,15 +40,13 @@ export class LoginComponent {
   onSubmit(loginForm: any) {
     this.user.UserName = loginForm.UserName;
     this.user.Password = loginForm.Password;
-    
     this.loginResult = this.dataService.login(this.user).subscribe(result => {
-      console.log(this.loginResult);
-      console.log(result.UserName);
       this.loginResult = result;
+      console.log(this.loginResult)
       
       this.showSuccess();
     }, (error) =>{
-      console.error('something went wong')
+      console.error('something went wong', error)
       this.showError("Wrong Credentials Try again");
     });
   }
