@@ -218,41 +218,50 @@ export class CustomerComponent implements OnInit {
     })
   }
 
+  //method taking in secs mins hours and date as parameter
   openElPrice(seconds: number, minutes: number, hours: number, date: string){
+    //calling createElPrice method which calculates the el price to a variable
     this.createElPrice(seconds, minutes, hours, date);
+    //and shows the p-dialog where the variable with the calculated price is shown
     this.showElPrice = true;
   }
 
    //electric prices
+   //takes in secs mins hours and date to calculate the price
    createElPrice(seconds: number, minutes: number, hours: number, date: string) {
+    // variables
     var elPriceAPI;
     let endDate = new Date(date);
 
+    //the elPricess products array is populated with dataservice method getElecPrices()
+    //passing in date to get specific date prices
     this.elPrices$ = this.data.getElecPrices(endDate);
     this.elPrices$.subscribe(
       (response: ElectricPrices[]) => {
+        //getting the electric price the exact hour the light was on at
         elPriceAPI = response.at(endDate.getHours());
-        //chatgpt
+        //checking for nulls and dkk_per_kwh is number
         if (elPriceAPI && typeof elPriceAPI.DKK_per_kWh === 'number' && !isNaN(elPriceAPI.DKK_per_kWh)) {
-          // Your calculations involving elPriceAPI.DKK_per_kWh
+          
+          // Calculation for amount of time light has been turned on
           let lightHoursUp = hours + (minutes / 60) + (seconds / 60 / 60);
 
-          // calc to KWH 
+          // calculating to KWH 
           let lightKWH = 40 * lightHoursUp / 1000;
 
-          //øre
+          //Calculating price for light session and calc to "Øre"
           let priceForSesh = (lightKWH * elPriceAPI.DKK_per_kWh) * 100;
+
+          //bind variable equel to price for session fixed to 2 decimals with toFixed()
           this.elPriceVar = priceForSesh.toFixed(2);
           this.overviewPrice = "Price for the light: " + priceForSesh.toFixed(2) + " øre daily";
 
         } else {
           console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");
-          // Handle the case where elPriceAPI is undefined or DKK_per_kWh is not a valid number
         }
       },
       (error) => {
         console.error(error);
-        // Handle errors here
       }
     );
     

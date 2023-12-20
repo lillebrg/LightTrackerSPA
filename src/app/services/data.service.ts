@@ -27,6 +27,7 @@ export class DataService {
     });
   }
 
+  //method taking in a date as a parameter and getting electric prices for the passed in date
   getElecPrices(dateToday: Date): Observable<ElectricPrices[]>{
     this.msg.add({
       severity: 'info',
@@ -34,6 +35,7 @@ export class DataService {
       detail: 'Getting electric prices data from api',
       life: 2000,
     });
+    //return http get for el price API using date parameter to get the specific day for electric prices
     return this.http.get<ElectricPrices[]>(`https://www.elprisenligenu.dk/api/v1/prices/${dateToday.getFullYear()}/${dateToday.getMonth() +1}-${dateToday.getDate()}_DK1.json`).pipe(
       tap((response) => {
         this.msg.add({
@@ -44,6 +46,7 @@ export class DataService {
         });
         return response;
       }),
+      //error handling
       catchError((error) => {
         this.msg.add({
           severity: 'error',
@@ -55,7 +58,8 @@ export class DataService {
       })
     )
   }
-
+  
+  //get producs method returnig array of products 
   getProducts(): Observable<Product[]>{
     this.msg.add({
       severity: 'info',
@@ -63,6 +67,7 @@ export class DataService {
       detail: 'Getting Managers from the database',
       life: 2000,
     });
+    //returning a http.get getting products via APU url
     return this.http.get<Product[]>(`${this.url}/products`).pipe(
       tap((response) => {
         this.msg.add({
@@ -73,6 +78,7 @@ export class DataService {
         });
         return response;
       }),
+      //error handling 
       catchError((error) => {
         this.msg.add({
           severity: 'error',
@@ -191,8 +197,10 @@ export class DataService {
     );
   }
 
+  //post user method taking in a user as a method
   postUser(user: User): Observable<User>{
-    return this.http.post<User>(`${this.url}/users`, user).pipe()
+    //return http post to the API url 
+    return this.http.post<User>(`${this.url}/users`, user).pipe();
   }
 
   login(user: User): Observable<User>{
