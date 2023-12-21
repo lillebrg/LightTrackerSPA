@@ -20,11 +20,14 @@
         </th>
         <th>    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedLightLogs()" [disabled]="!selectedLightLogs || !selectedLightLogs.length"></button>
         </th>
-        <th pSortableColumn="arduinoid" style="width:15rem">productId <p-sortIcon field="productid"></p-sortIcon></th>
+        <th style="width:15rem">productId</th>
         <th style="width: 1rem">Hours</th>
         <th style="width: 1rem">Minutes</th>
         <th style="width: 15rem">Seconds</th>
-        <th pSortableColumn="timeofday" style="min-width:25rem">Date<p-sortIcon field="timeofday"></p-sortIcon></th>
+        <th pSortableColumn="dateSent" style="width:50rem">
+          Date
+          <p-sortIcon field="dateSent" (sort)="onSort($event)"></p-sortIcon>
+        </th>
         
         <th></th>
     </tr>

@@ -24,6 +24,8 @@ export class AdminComponent implements OnInit {
   deletedIds: number[] = [];
   componentTitle: string = "";
   timeSesPerHour: Number[] = [];
+  sortField: string = 'dateSent';
+  sortOrder: number = 1;
   
 
   user: User = {
@@ -70,8 +72,28 @@ export class AdminComponent implements OnInit {
             dateSent: dateSentFirstPart + '  ' + dateSentSecondPart // Concatenating parts...
           };
         });
-      })
+      }),
+      map((logs: LightLog[]) => this.sortData(logs)) // Sort data initially
     );
+  }
+
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = (event.order === 1) ? 1 : -1;
+
+    this.lightLogs$ = this.lightLogs$.pipe(
+      map((logs: LightLog[]) => this.sortData(logs)) // Sort data on p-sortIcon click
+    );
+  }
+
+  sortData(logs: LightLog[]): LightLog[] {
+    return logs.sort((a, b) => {
+      const valueA = (a as any)[this.sortField]; // Type assertion to any
+      const valueB = (b as any)[this.sortField]; // Type assertion to any
+      if (valueA < valueB) return -1 * this.sortOrder;
+      if (valueA > valueB) return 1 * this.sortOrder;
+      return 0;
+    });
   }
 
 
