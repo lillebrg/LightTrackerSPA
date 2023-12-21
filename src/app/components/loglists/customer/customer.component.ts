@@ -254,7 +254,7 @@ export class CustomerComponent implements OnInit {
 
           //bind variable equel to price for session fixed to 2 decimals with toFixed()
           this.elPriceVar = priceForSesh.toFixed(2);
-          this.overviewPrice = "Price for the light: " + priceForSesh.toFixed(2) + " øre daily";
+          this.overviewPrice = "Money spent: " + priceForSesh.toFixed(2) + " øre";
 
         } else {
           console.error("elPriceAPI is undefined or DKK_per_kWh is not a valid number");
