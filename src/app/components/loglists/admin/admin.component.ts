@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
 import { NavBar } from "../../shared/navbar/navbar.component";
 import { User } from '../../../models/user.model';
+import { UserdataService } from '../../../services/userdata.service';
 
 
 @Component({
@@ -38,23 +39,20 @@ export class AdminComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private userDataService: UserdataService) { }
 
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      // Reconstructing the received data into the User object
-      this.user = {
-        id: params['id'],
-        productId: params['productId'],
-        userName: params['userName'],
-        password: params['password'],
-        isAdmin: params['isAdmin'],
-      };
-
-      console.log(this.user);
-    });
+    const userData = this.userDataService.getUser();
+    this.user = {
+      id: userData.id,
+        productId: userData.productId,
+        userName: userData.userName,
+        password: userData.password,
+        isAdmin: userData.isAdmin
+    }
 
     if (this.user.isAdmin == false || this.user.isAdmin == null){
       this.router.navigate(['/'])

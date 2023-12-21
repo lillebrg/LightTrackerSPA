@@ -6,9 +6,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
 import { User } from '../../../models/user.model';
-import { NavBar } from "../../shared/navbar/navbar.component";
+import { NavbarcustomerComponent } from '../../shared/navbarcustomer/navbarcustomer.component';
 import { ElectricPrices } from '../../../models/elecprices.model'
 import { __values } from 'tslib';
+import { UserdataService } from '../../../services/userdata.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { __values } from 'tslib';
   standalone: true,
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css',
-  imports: [SharedModule, NavBar]
+  imports: [SharedModule, NavbarcustomerComponent]
 })
 export class CustomerComponent implements OnInit {
 
@@ -51,21 +52,20 @@ export class CustomerComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private userDataService: UserdataService) { }
 
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      // Reconstructing the received data into the User object
-      this.user = {
-        id: params['id'],
-        productId: params['productId'],
-        userName: params['userName'],
-        password: params['password'],
-        isAdmin: params['isAdmin'],
-      };
-    });
+    const userData = this.userDataService.getUser();
+    this.user = {
+      id: userData.id,
+        productId: userData.productId,
+        userName: userData.userName,
+        password: userData.password,
+        isAdmin: userData.isAdmin
+    }
 
     console.log("fromcustomercomponent")
     console.log(this.user)

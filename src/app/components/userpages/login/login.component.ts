@@ -4,6 +4,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { DataService } from '../../../services/data.service';
 import { User } from '../../../models/user.model';
 import { Router } from '@angular/router';
+import { UserdataService } from '../../../services/userdata.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent {
   constructor(
     private messageService: MessageService, 
     private dataService: DataService,
-    private router: Router,) {
+    private router: Router,
+    private userDataService: UserdataService) {
   }
   ngOnInit(): void {
     
@@ -61,12 +63,14 @@ export class LoginComponent {
         password: result.password,
         isAdmin: result.isAdmin
       };
-      
+      this.userDataService.setUser(this.userResult);
+      console.log(this.userResult)
+
       if(this.userResult.isAdmin == true){
-        this.router.navigate(['/adminlogs'], {queryParams: this.userResult})
+        this.router.navigate(['/adminlogs'])
       }
       else if(this.userResult.isAdmin == false){
-        this.router.navigate(['/customerlogs'], {queryParams: this.userResult})
+        this.router.navigate(['/customerlogs'])
       }
       this.showSuccess();
     }, (error) =>{

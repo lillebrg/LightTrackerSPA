@@ -5,6 +5,7 @@ import { DataService } from '../../../services/data.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs'
 import { Product } from '../../../models/product.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-createuser',
   standalone: true,
@@ -18,7 +19,10 @@ export class CreateuserComponent implements OnInit{
   
   //usermodel to send with http post
   user = <User>{};
-  constructor(private data: DataService, private messageService: MessageService) {
+  constructor(
+    private data: DataService,
+    private messageService: MessageService,
+    private router: Router,) {
   }
 
   ngOnInit(): void {
@@ -83,5 +87,9 @@ export class CreateuserComponent implements OnInit{
 
     }
 
+  }
+
+  Cancel(){
+    this.router.navigate(['/adminlogs'])
   }
 }
