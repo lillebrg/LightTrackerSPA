@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   providers: [MessageService, ConfirmationService]
 })
 export class CreateuserComponent implements OnInit{
+  //products array 
   products$!: Observable<Product[]>;
   
   //usermodel to send with http post
@@ -25,10 +26,14 @@ export class CreateuserComponent implements OnInit{
     private router: Router,) {
   }
 
+  //on init 
   ngOnInit(): void {
+
+    //populating products array with dataservice getProducts()
     this.products$ = this.data.getProducts();
   }
 
+  //toast success
   showSuccess() {
     this.messageService.add({
       severity: "success",
@@ -37,6 +42,7 @@ export class CreateuserComponent implements OnInit{
     });
 
   }
+  //toast error
   showError(errorMessage: string) {
     this.messageService.add({
       severity: "error",
@@ -44,10 +50,14 @@ export class CreateuserComponent implements OnInit{
       detail: errorMessage
     });
   }
+
+  //create user method called when the create user form is submitted
+  //takes an any as parameter which is the input as properties
   createUserSubmit(userForm: any) {
     console.log(userForm);
     //username val
     if (userForm.UserName.length < 2) {
+      //showing toast error
       this.showError("The User was not created! \n Username minimum length is 2 characters!");
     }
     else {
@@ -62,18 +72,22 @@ export class CreateuserComponent implements OnInit{
           this.showError("The User was not created! \n  Choose a product");;
         }
         else{
+          //to user object
           this.user.userName = userForm.UserName;
           this.user.password = userForm.Password;
           this.user.productId = userForm.ProductId;
           this.user.isAdmin = userForm.isAdmin;
+
+
           if(userForm.isAdmin === ""){
             this.user.isAdmin = false;
           }
-  
+          //calling dataservice postuser which takes in a userobject and creates it 
           this.data.postUser(this.user).subscribe(result => {
             console.log('POST request successful:', result);
             this.showSuccess();
           },
+          //error handling
           (error)=> {
             console.error('Error in POST request:', error);
             this.showError("The User was not created! \n Unexpected error! try again later");

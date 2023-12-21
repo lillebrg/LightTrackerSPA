@@ -11,6 +11,9 @@ mat-card {
 
 .bodyColor {
   background-color: #5280b7;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 
 

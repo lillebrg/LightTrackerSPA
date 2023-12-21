@@ -1,3 +1,4 @@
+<!-- toast message tag primeng -->
 <p-toast></p-toast>
 
 <div class="text-center container" id="createUserContainer">
@@ -7,12 +8,17 @@
         <br>
         <hr>
         <br>
+
+        <!-- form with a ngsubmit and a userForm variable for inputs -->
+        <!-- when submitted calling createUserSubmit method to create user -->
         <form #userForm="ngForm" (ngSubmit)="createUserSubmit(userForm.value)">
             <div class="row form-group ">
                 <div class="col-2"></div>
                 <div class="col-8  mb-3 ">
+                    <!-- ngmodel and name "UserName" handling property binding to the userForm variable -->
                     <input #uName="ngModel" required minlength="2" type="text" name="UserName" class="form-control"
                         placeholder="Username" ngModel>
+                        <!-- and some validation with ngif -->
                     <small *ngIf="uName.touched && uName.invalid" class="text-danger ">Invalid Username</small>
                 </div>
                 <div class="col-2"></div>
@@ -20,6 +26,7 @@
             <div class="row form-group">
                 <div class="col-2"></div>
                 <div class="col-8">
+                    <!-- Password -->
                     <input #pWord="ngModel" required minlength="8" type="password" name="Password"
                         class="form-control mb-3" placeholder="password" ngModel />
                     <div *ngIf="pWord.touched && pWord.invalid" class="text-danger">
@@ -31,9 +38,14 @@
             </div>
             <div class="row form-group">
                 <div class="col-2"></div>
+
+                <!-- select form products -->
+                <!--  binds on observable product list from ts    -->
                 <div class="col-8" *ngIf="products$ | async as products">
+                    <!-- ngmodel and name ProductId -->
                     <select class="p-dropdown form-select" name="ProductId" ngModel>
                         <option value="" disabled selected>Select your product</option>
+                        <!-- loop for product list displaying all product names and taking the id as value -->
                         @for (product of products; track $index) {
 
                         <option [value]="product.id">{{ product.name}}
@@ -44,6 +56,7 @@
                 <div class="col-2"></div>
             </div>
             
+            <!-- IsAdmin -->
             <div class="row mt-3 ">
                 <div class="col-5"></div>
                 <div class="col-1">
@@ -55,6 +68,7 @@
                 <div class="col-5"></div>
             </div>
 
+            <!-- submit button -->
             <div class="row mt-5">
                 <div class="col-2"></div>
                 <div class="col-1"></div>

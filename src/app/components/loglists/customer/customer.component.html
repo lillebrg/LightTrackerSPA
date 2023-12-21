@@ -45,6 +45,8 @@
     <td>{{ entity.seconds }}</td>
     <td>{{ entity.dateSent }}</td>
     <td>
+      <!-- button calling openElPrice method in ts passing in hours mins secs and date as parameter -->
+      <!-- this method calculates the price of the light sessions and opens a p-dialog to display it -->
       <button pButton pRipple (click)="openElPrice(entity.seconds, entity.minutes, entity.hours, entity.dateSent)">Calculate price</button>
     </td>
     <td>
